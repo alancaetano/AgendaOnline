@@ -102,6 +102,7 @@ textarea {
 
 .input-escrever-mensagem{
     text-align: left;
+    max-width: none;
 }
 
 .botao-enviar{
