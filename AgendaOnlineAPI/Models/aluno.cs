@@ -1,4 +1,4 @@
-namespace AgendaOnlineWeb.Models
+namespace AgendaOnlineAPI.Models
 {
     using System;
     using System.Collections.Generic;
@@ -6,21 +6,15 @@ namespace AgendaOnlineWeb.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("mensagem")]
-    public partial class mensagem
+    [Table("aluno")]
+    public partial class aluno
     {
         public Guid id { get; set; }
 
-        public Guid id_conversa { get; set; }
-
-        public Guid id_usuario { get; set; }
-
         [StringLength(50)]
-        public string texto { get; set; }
+        public string nome { get; set; }
 
-        public DateTime? dt_envio { get; set; }
-
-        public virtual conversa conversa { get; set; }
+        public Guid? id_usuario_responsavel { get; set; }
 
         public virtual usuario usuario { get; set; }
     }

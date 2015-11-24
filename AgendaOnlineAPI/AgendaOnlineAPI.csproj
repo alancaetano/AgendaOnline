@@ -97,10 +97,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\aluno.cs" />
     <Compile Include="Models\conversa.cs" />
     <Compile Include="Models\mensagem.cs" />
     <Compile Include="Models\Modelo.cs" />
     <Compile Include="Models\usuario.cs" />
+    <Compile Include="Models\VO\ConversaVO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

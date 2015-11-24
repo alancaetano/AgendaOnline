@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AgendaOnlineAPI.Models;
+using System.Collections;
+using AgendaOnlineAPI.Models.VO;
 
 namespace AgendaOnlineAPI.Controllers
 {
@@ -17,13 +19,13 @@ namespace AgendaOnlineAPI.Controllers
         private Modelo db = new Modelo();
 
         // GET: api/Conversas
-        public IEnumerable<conversa> GetConversas(Guid id)
+        public IEnumerable GetConversas(Guid id)
         {
             if (id == null)
                 throw new ArgumentNullException("Parametro id do usuário está nulo.");
 
-            IEnumerable<conversa> conversas = from conv in db.conversa.SqlQuery(conversa.queryConsultaListaDeConversas, id) 
-                                              select new conversa{ id = conv.id, tipo = conv.tipo, nomeUsuario = conv.nomeUsuario, ultimaMensagemDataEnvio = conv.ultimaMensagemDataEnvio, ultimaMensagemTexto = conv.ultimaMensagemTexto};
+            IEnumerable conversas = from conv in db.Database.SqlQuery<ConversaVO>(conversa.queryConsultaListaDeConversas, new object[]{ id }) 
+                                              select new { id = conv.Id, tipo = conv.Tipo, nomeUsuario = conv.NomeUsuario, ultimaMensagemDataEnvio = conv.UltimaMensagemDataEnvio, ultimaMensagemTexto = conv.UltimaMensagemTexto};
 
             return conversas;
             

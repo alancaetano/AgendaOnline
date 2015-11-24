@@ -6,12 +6,12 @@ namespace AgendaOnlineAPI.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    
     [Table("usuario")]
     public partial class usuario
     {
         public usuario()
         {
+            aluno = new HashSet<aluno>();
             mensagem = new HashSet<mensagem>();
             conversa = new HashSet<conversa>();
         }
@@ -29,6 +29,8 @@ namespace AgendaOnlineAPI.Models
 
         [StringLength(1)]
         public string tipo { get; set; }
+
+        public virtual ICollection<aluno> aluno { get; set; }
 
         public virtual ICollection<mensagem> mensagem { get; set; }
 

@@ -11,11 +11,11 @@ namespace AgendaOnlineAPI.Models
     {
         public Guid id { get; set; }
 
-        public Guid id_conversa { get; set; }
+        public Guid? id_usuario { get; set; }
 
-        public Guid id_usuario { get; set; }
+        public Guid? id_conversa { get; set; }
 
-        [StringLength(50)]
+        [StringLength(200)]
         public string texto { get; set; }
 
         public DateTime? dt_envio { get; set; }
