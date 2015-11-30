@@ -48,6 +48,9 @@
       <HintPath>..\packages\Microsoft.Azure.AppService.ApiApps.Service.0.9.16\lib\net45\Microsoft.Azure.AppService.ApiApps.Service.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.WebSockets">
+      <HintPath>..\packages\Microsoft.WebSockets.0.2.3\lib\net45\Microsoft.WebSockets.dll</HintPath>
+    </Reference>
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
@@ -102,6 +105,8 @@
     <Compile Include="Models\mensagem.cs" />
     <Compile Include="Models\Modelo.cs" />
     <Compile Include="Models\usuario.cs" />
+    <Compile Include="Models\VO\UsuarioReponsavelVO.cs" />
+    <Compile Include="Models\VO\MensagemVO.cs" />
     <Compile Include="Models\VO\ConversaVO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

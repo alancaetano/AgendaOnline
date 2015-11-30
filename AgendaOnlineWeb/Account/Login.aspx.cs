@@ -11,7 +11,7 @@ public partial class Account_Login : Page
 {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["usuario_logado"] != null)
+            if (Session["usuarioLogadoID"] != null && Session["usuarioLogadoID"] != string.Empty)
                 Response.Redirect("../Default.aspx");
 
         }
@@ -25,7 +25,7 @@ public partial class Account_Login : Page
                 var usuario = ((from usuarios in db.usuario where (usuarios.email == UserName.Text && usuarios.senha == Password.Text) select new { id = usuarios.id, nome = usuarios.nome, email = usuarios.email, tipo = usuarios.tipo }).SingleOrDefault());
                 if (usuario != null)
                 {
-                    Session.Add("usuario_logado", usuario);
+                    Session.Add("usuarioLogadoID", usuario.id);
                     Response.Redirect("../Default.aspx");
                 }
                 else

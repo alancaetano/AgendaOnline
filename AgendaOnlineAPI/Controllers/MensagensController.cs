@@ -9,6 +9,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AgendaOnlineAPI.Models;
+using System.Web.Script.Serialization;
+using System.Text;
+using AgendaOnlineAPI.Models.VO;
 
 namespace AgendaOnlineAPI.Controllers
 {
@@ -49,7 +52,18 @@ namespace AgendaOnlineAPI.Controllers
                 }
             }
 
+
+
             return CreatedAtRoute("DefaultApi", new { id = mensagem.id }, mensagem);
+        }
+
+        private void EnviarMensagemParaClienteWeb(MensagemVO msg)
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            var outputBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(jss.Serialize(msg)));
+            //terminar
+            /*foreach (WebSocket s in sockets)
+                s.SendAsync(outputBuffer, WebSocketMessageType.Text, true, CancellationToken.None);*/
         }
 
         // DELETE: api/Mensagens/5
