@@ -37,7 +37,9 @@ namespace AgendaOnlineAPI.Controllers
 
                 IQueryable<usuario> lista = db.usuario.Where(u => u.email == email && u.senha == senha);
 
-                var usuario = ((from usuarios in db.usuario where (usuarios.email == email && usuarios.senha == senha) select new { id = usuarios.id, nome = usuarios.nome, email = usuarios.email, tipo = usuarios.tipo }).SingleOrDefault());
+                var usuario = ((from usuarios in db.usuario 
+                                where (usuarios.email == email && usuarios.senha == senha) 
+                                select new { id = usuarios.id, nome = usuarios.nome, email = usuarios.email, tipo = usuarios.tipo }).SingleOrDefault());
                 if (usuario == null)
                     return NotFound();
 

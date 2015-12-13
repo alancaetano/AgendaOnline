@@ -22,7 +22,9 @@ namespace AgendaOnlineAPI.Controllers
         // GET: api/Mensagens
         public IQueryable GetMensagens(Guid id)
         {
-            return from msgs in db.mensagem where (msgs.id_conversa == id) select new { id = msgs.id, texto = msgs.texto, dt_envio = msgs.dt_envio, id_usuario = msgs.id_usuario, nomeUsuario = msgs.usuario.nome};
+            return from msgs in db.mensagem 
+                   where (msgs.id_conversa == id) 
+                   select new { id = msgs.id, texto = msgs.texto, dt_envio = msgs.dt_envio, id_usuario = msgs.id_usuario, nomeUsuario = msgs.usuario.nome};
         }
 
         // POST: api/Mensagens

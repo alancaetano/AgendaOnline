@@ -9,6 +9,10 @@ namespace AgendaOnlineAPI.Models.VO
     {
         public Guid Id { get; set; }
 
+        public Guid IdUsuario { get; set; }
+
+        public Guid IdConversa { get; set; }
+
         public string Texto { get; set; }
 
         public bool EhMensagemDoRemetente { get; set; }

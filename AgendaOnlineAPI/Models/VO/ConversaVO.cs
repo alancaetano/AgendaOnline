@@ -9,9 +9,13 @@ namespace AgendaOnlineAPI.Models.VO
     {
         public Guid Id { get; set; }
 
+        public Guid IdUsuario { get; set; }
+
         public string Tipo { get; set; }
 
         public string NomeUsuario { get; set; }
+
+        public string NomeAluno { get; set; }
 
         public DateTime UltimaMensagemDataEnvio { get; set; }
 
