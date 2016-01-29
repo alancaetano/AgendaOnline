@@ -15,14 +15,11 @@ using System.Web.Script.Serialization;
 /// </summary>
 public class MensagemHandler : WebSocketHandler
 {
-    public static List<WebSocket> sockets;
+    public static Dictionary<string, WebSocket> sockets;
     
     public override void OnOpen()
     {
-        if (sockets == null)
-            sockets = new List<WebSocket>();
-
-        sockets.Add(this.WebSocketContext.WebSocket);
+        
     }
 
     public override void OnMessage(string json)
@@ -30,26 +27,72 @@ public class MensagemHandler : WebSocketHandler
         JavaScriptSerializer serializer = new JavaScriptSerializer();
         MensagemVO vo = (MensagemVO)serializer.Deserialize<MensagemVO>(json);
 
+        if (vo.IdConversa.ToString() == string.Empty)
+            ArmazenarSocket(vo.IdUsuario.ToString());
+        else
+            SalvarMensagem(vo);       
+    }
+
+    private void ArmazenarSocket(string idUsuario){
+        if (sockets == null)
+            sockets = new Dictionary<string, WebSocket>();
+
+        WebSocket socket = null;
+        sockets.TryGetValue(idUsuario, out socket);
+        if (socket != null)
+            sockets.Remove(idUsuario);
+            
+        sockets.Add( idUsuario, this.WebSocketContext.WebSocket);
+    }
+
+    private void SalvarMensagem(MensagemVO vo){
         mensagem msg = new mensagem();
         msg.id = Guid.NewGuid();
-        msg.id_usuario = vo.IdUsuario;
-        msg.id_conversa = vo.IdConversa;
+        msg.id_usuario = new Guid(vo.IdUsuario);
+        msg.id_conversa = new Guid(vo.IdConversa);
         msg.texto = vo.Texto;
         msg.dt_envio = DateTime.Now;
+
+        bool ehProfessor = false;
 
         using (Modelo db = new Modelo())
         {
             db.mensagem.Add(msg);
             db.SaveChanges();
 
-            EnviarNotificacao(vo);
+            usuario u = db.usuario.Where(usu => usu.id.ToString() == vo.IdUsuario).FirstOrDefault();
+            ehProfessor = u.tipo == "P";
+
         }
-       
+
+        if (ehProfessor)
+            EnviarNotificacao(vo);
+        else
+            EnviarMensagemNoSocket(vo);
+                
     }
 
     public void EnviarNotificacao(MensagemVO vo)
     {
         //notificação push para o app
+    }
+
+    public void EnviarMensagemNoSocket(MensagemVO vo)
+    {
+        usuario professor = null;
+        using (Modelo db = new Modelo())
+        {
+            conversa c = db.conversa.Find(vo.IdConversa);
+            professor = c.usuario.Where(u => u.id.ToString() != vo.IdUsuario).FirstOrDefault();
+
+        }
+
+        WebSocket socket = null;
+        sockets.TryGetValue(professor.id.ToString(), out socket);
+
+        ArraySegment<byte> buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(vo.Texto));
+
+        socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
     }
 }
 

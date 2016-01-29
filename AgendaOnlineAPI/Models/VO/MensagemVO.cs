@@ -7,11 +7,11 @@ namespace AgendaOnlineAPI.Models.VO
 {
     public class MensagemVO
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public Guid IdUsuario { get; set; }
+        public string IdUsuario { get; set; }
 
-        public Guid IdConversa { get; set; }
+        public string IdConversa { get; set; }
 
         public string Texto { get; set; }
 

@@ -1,4 +1,4 @@
-﻿function conectar() {
+﻿/*function conectar(usuarioLogadoID) {
     var serviceURL = "ws://" + window.location.host + "/MensagemService.ashx";
 
     if (!window.WebSocket && window.MozWebSocket)
@@ -6,11 +6,19 @@
     if (!window.WebSocket)
         alert("WebSocket não é suportado pelo seu navergador.");
 
+    
     socket = new WebSocket(serviceURL);
-
+    
     socket.onmessage = function (msg) {
-        var data = JSON.parse(msg.data);
+        var vo = JSON.parse(msg.data);
+        var balao = "<div class='row'><div class='col-sm-11'><div class='bubble you'>" + vo.Texto + "</div></div></div>";
+        document.getElementById("scroll-panel-msgs").innerHTML += balao;
     };
+
+    while (socket.readyState == 0) {
+        alert(socket.readyState);
+    }
+    enviarMensagem(usuarioLogadoID, null, null);
 }
 
 function carregarMensagens(usuarioLogadoID, conversaID) {
@@ -28,6 +36,10 @@ function carregarMensagens(usuarioLogadoID, conversaID) {
 function enviarMensagem(usuarioLogadoID, conversaID, texto) {
     socket.send(JSON.stringify({ IdUsuario: usuarioLogadoID, IdConversa: conversaID, Texto: texto }));
 
-    var balao = "<div class='row'><div class='col-sm-11'><div class='bubble me'>" + texto + "</div></div></div>";
-    document.getElementById("scroll-panel-msgs").innerHTML += balao;
-}
+    if (texto) {
+        var balao = "<div class='row'><div class='col-sm-11'><div class='bubble me'>" + texto + "</div></div></div>";
+        document.getElementById("scroll-panel-msgs").innerHTML += balao;
+        document.getElementById('campo-escrever').value = "";
+    }
+    
+}*/

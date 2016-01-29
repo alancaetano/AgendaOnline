@@ -12,8 +12,10 @@ public partial class Account_Login : Page
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["usuarioLogadoID"] != null && Session["usuarioLogadoID"] != string.Empty)
-                Response.Redirect("../Default.aspx");
-
+            {
+                Response.Redirect("../Default.aspx",false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
         }
 
         protected void LogIn(object sender, EventArgs e)
@@ -26,7 +28,8 @@ public partial class Account_Login : Page
                 if (usuario != null)
                 {
                     Session.Add("usuarioLogadoID", usuario.id);
-                    Response.Redirect("../Default.aspx");
+                    Response.Redirect("../Default.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {

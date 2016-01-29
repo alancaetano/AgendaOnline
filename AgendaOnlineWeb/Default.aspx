@@ -1,19 +1,70 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
 <%@ Import Namespace="System.Data" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src=".\Scripts\chat.js" ></script>
+    <!--<script type="text/javascript" src="Scripts\chat.js" ></script>-->
     <script type="text/javascript"> 
         var conversaSelecionada = undefined;
         var socket = undefined;
 
-        conectar();
-
         paginaCarregada = function () {
-            var element = document.getElementById('scroll-panel-msgs');
-            element.scrollTop = element.offsetHeight;
+            var usuarioID = '<%=Session["usuarioLogadoID"] %>';
+            conectar(usuarioID);
+            irParaRodape();
         }
 
         Sys.Application.add_load(paginaCarregada);
+
+        carregarMensagens = function (usuarioLogadoID, conversaID) {
+            conversaSelecionada = conversaID;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    document.getElementById("scroll-panel-msgs").innerHTML = xhttp.responseText;
+                    irParaRodape();
+                }
+            };
+            xhttp.open("GET", "http://" + window.location.host + "/BuscarMensagensService.ashx?usuarioLogadoID=" + usuarioLogadoID + "&conversaID=" + conversaID, true);
+            xhttp.send();
+        }
+
+        enviarMensagem = function (usuarioLogadoID, conversaID, texto) {
+            socket.send(JSON.stringify({ IdUsuario: usuarioLogadoID, IdConversa: conversaID, Texto: texto }));
+
+            if (texto) {
+                var balao = "<div class='row'><div class='col-sm-11'><div class='bubble me'>" + texto + "</div></div></div>";
+                document.getElementById("scroll-panel-msgs").innerHTML += balao;
+                document.getElementById('campo-escrever').value = "";
+                irParaRodape();
+            }
+        }
+
+        conectar = function (usuarioLogadoID) {
+            var serviceURL = "ws://" + window.location.host + "/MensagemService.ashx";
+
+            if (!window.WebSocket && window.MozWebSocket)
+                window.WebSocket = window.MozWebSocket;
+            if (!window.WebSocket)
+                alert("WebSocket não é suportado pelo seu navergador.");
+
+            socket = new WebSocket(serviceURL);
+
+            socket.onmessage = function (msg) {
+                var vo = JSON.parse(msg.data);
+                var balao = "<div class='row'><div class='col-sm-11'><div class='bubble you'>" + vo.Texto + "</div></div></div>";
+                document.getElementById("scroll-panel-msgs").innerHTML += balao;
+                irParaRodape();
+            };
+
+            socket.onopen = function () {
+                enviarMensagem(usuarioLogadoID, "", "");
+            }
+
+            irParaRodape = function () {
+                var element = document.getElementById('scroll-panel-msgs');
+                element.scrollTop = element.offsetHeight;
+            }
+
+        }
     </script>
 
     <div class="container-fluid">

@@ -20,5 +20,6 @@ namespace AgendaOnlineAPI.Models.VO
         public DateTime UltimaMensagemDataEnvio { get; set; }
 
         public string UltimaMensagemTexto { get; set; }
+
     }
 }

@@ -15,7 +15,11 @@ public partial class _Default : Page
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Session["usuarioLogadoID"] == null || Session["usuarioLogadoID"].ToString() == string.Empty)
-            Response.Redirect("Account/Login.aspx");
+        {
+            Response.Redirect("Account/Login.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
+            return;
+        }
 
         string usuarioLogadoID = Session["usuarioLogadoID"].ToString();
 
